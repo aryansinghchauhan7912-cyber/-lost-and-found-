@@ -1,0 +1,1603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>SRMU Lost & Found Portal</title>
+<style>
+/* Attractive Updated Styles */
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+}
+
+body {
+font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+background: linear-gradient(135deg, #5ee7df 0%, #b490ca 100%);
+min-height: 100vh;
+padding-bottom: 80px;
+overflow-x: hidden;
+color: #1a1a1a;
+}
+
+.container {
+max-width: 1200px;
+margin: 0 auto;
+padding: 20px;
+}
+
+.welcome {
+text-align: center;
+color: #fff;
+padding: 100px 20px;
+text-shadow: 0 0 15px rgba(0,0,0,0.3);
+}
+
+.welcome h1 {
+font-size: 4rem;
+margin-bottom: 20px;
+animation: fadeInUp 1s ease-out;
+letter-spacing: 3px;
+font-weight: 900;
+text-shadow: 0 0 15px #5ee7df;
+}
+
+.welcome p {
+font-size: 1.4rem;
+margin-bottom: 50px;
+animation: fadeInUp 1s ease-out 0.3s both;
+font-weight: 600;
+letter-spacing: 1.2px;
+text-shadow: 0 0 7px rgba(0,0,0,0.25);
+}
+
+.org-buttons {
+display: flex;
+justify-content: center;
+gap: 20px;
+flex-wrap: wrap;
+animation: fadeInUp 1s ease-out 0.6s both;
+}
+
+.org-btn {
+background: linear-gradient(145deg, #36d1dc 0%, #5b86e5 100%);
+color: white;
+padding: 22px 48px;
+font-size: 1.3rem;
+font-weight: 700;
+border-radius: 60px;
+cursor: pointer;
+border: none;
+box-shadow:
+0 6px 20px rgba(54, 209, 220, 0.6),
+inset 0 -3px 7px rgba(255,255,255,0.2);
+transition: all 0.3s ease;
+text-transform: uppercase;
+letter-spacing: 1.5px;
+}
+
+.org-btn:hover {
+background: linear-gradient(145deg, #5b86e5 0%, #36d1dc 100%);
+transform: translateY(-7px);
+box-shadow:
+0 15px 40px rgba(54, 209, 220, 0.9),
+inset 0 3px 10px rgba(255,255,255,0.3);
+}
+
+.btn {
+width: 100%;
+padding: 15px;
+background: linear-gradient(135deg, #4c91f5, #8f74ff);
+color: white;
+border: none;
+border-radius: 15px;
+font-size: 1.15rem;
+font-weight: 700;
+cursor: pointer;
+transition: all 0.4s ease;
+box-shadow: 0 12px 24px rgba(79, 84, 250, 0.45);
+user-select: none;
+}
+
+.btn:hover {
+box-shadow: 0 18px 36px rgba(79, 84, 250, 0.7);
+transform: translateY(-3px);
+background: linear-gradient(135deg, #8f74ff, #4c91f5);
+}
+
+.btn-secondary {
+background: #b0baff;
+color: #3b3b3b;
+border-radius: 12px;
+font-weight: 600;
+box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+}
+
+.btn-secondary:hover {
+background: #8b9efe;
+color: white;
+box-shadow: 0 10px 26px rgba(107, 117, 255, 0.7);
+}
+
+/* Form styling */
+.form-container {
+display: none;
+background: rgba(255, 255, 255, 0.95);
+backdrop-filter: blur(16px);
+border-radius: 20px;
+padding: 40px;
+margin: 50px auto;
+max-width: 500px;
+box-shadow: 0 18px 30px rgba(102, 126, 234, 0.25);
+animation: slideIn 0.5s ease-out;
+}
+
+.form-container.active {
+display: block;
+}
+
+.form-header {
+text-align: center;
+margin-bottom: 30px;
+}
+
+.form-header h2 {
+color: #3a3a3a;
+font-size: 2.2rem;
+margin-bottom: 8px;
+letter-spacing: 0.08em;
+}
+
+.form-header p {
+color: #555;
+font-weight: 600;
+}
+
+.form-group {
+margin-bottom: 25px;
+}
+
+label {
+display: block;
+margin-bottom: 8px;
+color: #3b3b3b;
+font-weight: 700;
+}
+
+input,
+select,
+textarea {
+width: 100%;
+padding: 15px;
+border: 2px solid #dbe4ff;
+border-radius: 12px;
+font-size: 1.1rem;
+transition: all 0.3s ease;
+background: #f6f8ff;
+font-weight: 600;
+color: #3b3b3b;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+outline: none;
+border-color: #667eea;
+background: white;
+box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.23);
+}
+
+/* Messages */
+.success-message {
+background: #daf7dc;
+color: #27732d;
+padding: 20px;
+border-radius: 15px;
+margin: 20px 0;
+border: 1px solid #b4deb6;
+display: none;
+white-space: pre-wrap;
+font-weight: 600;
+text-align: center;
+}
+
+.error-message {
+background: #fbeaea;
+color: #8a2c2c;
+padding: 18px;
+border-radius: 15px;
+margin: 20px 0;
+border: 1px solid #f3c3c3;
+display: none;
+white-space: pre-wrap;
+font-weight: 600;
+text-align: center;
+}
+
+/* Dashboard */
+.dashboard {
+display: none;
+padding: 40px 30px;
+max-width: 750px;
+margin: 50px auto;
+background: #ffffffdd;
+border-radius: 30px;
+box-shadow:
+0 25px 60px rgba(75, 75, 238, 0.16),
+0 5px 15px rgba(33, 33, 141, 0.1);
+}
+
+.dashboard.active {
+display: block;
+animation: fadeInUp 0.9s ease forwards;
+}
+
+.report-section h3 {
+color: #4b5299;
+font-weight: 800;
+margin-bottom: 15px;
+letter-spacing: 0.05em;
+}
+
+/* Reports list grid and cards */
+.reports-list {
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+gap: 22px;
+margin-top: 28px;
+}
+
+.report-card {
+background: #eef3ff;
+border-radius: 18px;
+padding: 22px 25px;
+border-left: 6px solid #4855e0;
+box-shadow: 0 8px 15px rgba(72, 85, 224, 0.15);
+word-break: break-word;
+transition: box-shadow 0.25s ease-in-out;
+}
+
+.report-card:hover {
+box-shadow: 0 14px 35px rgba(72, 85, 224, 0.3);
+}
+
+.report-card h4 {
+font-weight: 800;
+color: #373f71;
+margin-bottom: 10px;
+font-size: 1.25rem;
+}
+
+.report-card p {
+color: #555a86;
+font-size: 0.9rem;
+margin-bottom: 7px;
+}
+
+/* Admin Panel */
+.admin-panel {
+display: none;
+max-width: 1100px;
+margin: 50px auto;
+padding: 35px 30px;
+background-color: #ffffffdd;
+border-radius: 28px;
+box-shadow: 0 25px 60px rgba(75, 75, 238, 0.16);
+color: #2b3170;
+}
+
+.admin-panel.active {
+display: block;
+animation: fadeInUp 0.8s both;
+}
+
+.admin-nav {
+display: flex;
+gap: 20px;
+flex-wrap: wrap;
+margin-bottom: 30px;
+}
+
+.admin-nav button {
+background: linear-gradient(135deg, #4855e0, #7a7ee4);
+color: white;
+font-weight: 700;
+padding: 13px 28px;
+border: none;
+border-radius: 30px;
+cursor: pointer;
+box-shadow: 0 12px 24px rgba(72, 85, 224, 0.5);
+transition: all 0.3s ease;
+user-select:none;
+}
+
+.admin-nav button.active,
+.admin-nav button:hover {
+box-shadow: 0 18px 40px rgba(72, 85, 224, 0.8);
+background: linear-gradient(135deg, #7a7ee4, #4855e0);
+transform: translateY(-2px);
+}
+
+/* Operational Nav Buttons */
+#operationalNav {
+margin-bottom: 40px;
+display: flex;
+gap: 16px;
+flex-wrap: wrap;
+}
+
+#operationalNav button {
+background-color: #4b52bf;
+font-weight: 700;
+padding: 10px 28px;
+border-radius: 25px;
+color: white;
+border: none;
+cursor: pointer;
+box-shadow: 0 10px 20px rgba(75, 82, 191, 0.6);
+user-select:none;
+transition: all 0.3s ease;
+}
+
+#operationalNav button.active,
+#operationalNav button:hover {
+background-color: #6e73f7;
+box-shadow: 0 16px 36px rgba(75, 82, 191, 0.85);
+transform: translateY(-3px);
+}
+
+/* Tables & lists */
+.message-list {
+max-height: 400px;
+overflow-y: auto;
+border: 1px solid #ccd3f6;
+border-radius: 14px;
+padding: 15px;
+background: #f5f7ff;
+}
+
+.message-item {
+border-bottom: 1px solid #dbe2ff;
+padding: 12px 15px;
+}
+
+.message-item:last-child {
+border-bottom: none;
+}
+
+.message-header {
+font-weight: 700;
+color: #3a3f72;
+font-size: 1rem;
+}
+
+.message-date {
+font-size: 0.85rem;
+color: #8290c3;
+margin-top: 3px;
+}
+
+.message-content {
+margin-top: 8px;
+font-size: 0.95rem;
+color: #5b5f85;
+white-space: pre-wrap;
+}
+
+/* Other UI elements */
+.report-form, .contact-form {
+background: white;
+border-radius: 20px;
+padding: 32px;
+max-width: 700px;
+margin: 30px auto;
+box-shadow: 0 10px 30px rgba(72, 85, 224, 0.09);
+color: #373f71;
+}
+
+.report-form h3, .contact-form h3 {
+margin-bottom: 22px;
+font-weight: 900;
+letter-spacing: 0.05em;
+color: #4855e0;
+}
+
+.report-form label, .contact-form label {
+display: block;
+margin-bottom: 8px;
+font-weight: 700;
+color: #3a3a72;
+}
+
+.report-form input[type="text"],
+.report-form select,
+.report-form textarea,
+.contact-form textarea,
+.contact-form input[type="email"],
+.contact-form input[type="tel"] {
+width: 100%;
+padding: 14px;
+margin-bottom: 18px;
+border: 2px solid #dbe4ff;
+border-radius: 14px;
+resize: vertical;
+font-size: 1.1rem;
+font-weight: 600;
+color: #444c8a;
+background: #f5f7ff;
+}
+
+.report-form button, .contact-form button {
+background: linear-gradient(135deg, #4855e0, #7a7ee4);
+color: white;
+border: none;
+padding: 16px 30px;
+border-radius: 15px;
+font-size: 1.15rem;
+font-weight: 800;
+cursor: pointer;
+transition: background 0.3s ease, box-shadow 0.3s ease;
+user-select:none;
+}
+
+.report-form button:hover, .contact-form button:hover {
+background: linear-gradient(135deg, #7a7ee4, #4855e0);
+box-shadow: 0 14px 36px rgba(120, 130, 255, 0.6);
+transform: translateY(-3px);
+}
+
+/* Verification button */
+.verify-btn {
+background: #28a745;
+color: white;
+border: none;
+padding: 10px 18px;
+border-radius: 12px;
+cursor: pointer;
+margin-top: 10px;
+font-weight: 700;
+user-select:none;
+}
+.verify-btn:disabled {
+background: gray;
+cursor: default;
+}
+
+/* Footer */
+footer {
+position: fixed;
+bottom: 0;
+left: 0;
+width: 100%;
+background: #2e305f;
+color: white;
+text-align: center;
+padding: 14px 0;
+font-size: 0.9rem;
+z-index: 1000;
+user-select:none;
+}
+
+/* Current Time Display */
+#currentTime {
+font-weight: 700;
+color: white;
+text-align: center;
+font-size: 1.1rem;
+margin-top: 14px;
+user-select: none;
+}
+
+/* Animations */
+@keyframes fadeInUp {
+from {
+opacity: 0;
+transform: translateY(30px);
+}
+to {
+opacity: 1;
+transform: translateY(0);
+}
+}
+
+@keyframes slideIn {
+from {
+opacity: 0;
+transform: translateY(50px);
+}
+to {
+opacity: 1;
+transform: translateY(0);
+}
+}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+<!-- Current Time -->
+<div id="currentTime"></div>
+
+<!-- Welcome Page -->
+<div id="welcomePage" class="welcome">
+<h1>🔔 Lost & Found Portal</h1>
+<p>Welcome to the official Lost & Found system of Shri Ramswaroop Institutions</p>
+<div class="org-buttons">
+<button class="org-btn" onclick="selectOrg('SRMU')">🏫 Shri Ramswaroop Memorial University</button>
+<button class="org-btn" onclick="selectOrg('SRMCEM')">🏛️ Shri Ramswaroop Memorial College of Engg & Mgmt</button>
+<button class="org-btn" onclick="selectOrg('SRMS')">🏫 Shri Ramswaroop Memorial School</button>
+</div>
+<br />
+<button class="btn" onclick="showAdminLogin()">Admin / Operational Login</button>
+</div>
+
+<!-- Role Selection -->
+<div id="roleSelection" class="form-container">
+<div class="form-header">
+<h2>Select Your Role</h2>
+<p id="orgName"></p>
+</div>
+<div class="form-group">
+<button class="btn" onclick="showLogin('student')">👨‍🎓 Student Login</button>
+</div>
+<div class="form-group">
+<button class="btn" onclick="showLogin('employee')">👨‍🏫 Employee Login</button>
+</div>
+<div class="form-group">
+<button class="btn" onclick="showSignup('student')">👨‍🎓 Student Signup</button>
+</div>
+<div class="form-group">
+<button class="btn" onclick="showSignup('employee')">👨‍🏫 Employee Signup</button>
+</div>
+<button class="btn btn-secondary" onclick="backToWelcome()">← Back</button>
+</div>
+
+<!-- Login Form -->
+<div id="loginForm" class="form-container">
+<div class="form-header">
+<h2 id="loginTitle">Login</h2>
+<p id="loginOrg"></p>
+</div>
+<div class="form-group">
+<label>Email / Phone</label>
+<input type="text" id="loginCredential" required />
+</div>
+<div class="form-group">
+<label>Password</label>
+<input type="password" id="loginPassword" required />
+</div>
+<button class="btn" onclick="loginUser()">Login</button>
+<button class="btn btn-secondary" onclick="backToRole()">← Back</button>
+</div>
+
+<!-- Signup Form -->
+<div id="signupForm" class="form-container">
+<div class="form-header">
+<h2>Register New Account</h2>
+<p id="signupOrg"></p>
+</div>
+<div class="form-group">
+<label>Full Name *</label>
+<input type="text" id="signupName" required />
+</div>
+<div class="form-group">
+<label>Email *</label>
+<input type="email" id="signupEmail" required />
+</div>
+<div class="form-group">
+<label>Phone *</label>
+<input type="tel" id="signupPhone" required />
+</div>
+<div class="form-group" id="uniIdGroup">
+<label>University/College/School ID *</label>
+<input type="text" id="signupUniId" />
+</div>
+<div class="form-group" id="erpIdGroup">
+<label>ERP ID *</label>
+<input type="text" id="signupErpId" />
+</div>
+<div class="form-group">
+<label>Password *</label>
+<input type="password" id="signupPassword" required />
+</div>
+<div class="form-group">
+<label>Role</label>
+<select id="signupRole">
+<option value="student">Student</option>
+<option value="employee">Employee</option>
+<option value="teacher">Teacher</option>
+<option value="worker">Worker</option>
+</select>
+</div>
+<button class="btn" onclick="signupUser()">Register</button>
+<button class="btn btn-secondary" onclick="backToRole()">← Back</button>
+</div>
+
+<!-- Admin & Operational Login -->
+<div id="adminLogin" class="form-container">
+<div class="form-header">
+<h2>Institution Admin/Operational Login</h2>
+<p>Login for Admins & Operational Team</p>
+</div>
+<div class="form-group">
+<label>Organization</label>
+<select id="adminOrgSelect">
+<option value="SRMU">Shri Ramswaroop Memorial University</option>
+<option value="SRMCEM">Shri Ramswaroop Memorial College of Engg & Mgmt</option>
+<option value="SRMS">Shri Ramswaroop Memorial School</option>
+</select>
+</div>
+<div class="form-group">
+<label>Role</label>
+<select id="adminRoleSelect">
+<option value="institutionAdmin">Institution Admin</option>
+<option value="operationalTeam">Operational Team</option>
+</select>
+</div>
+<div class="form-group">
+<label>Email / Phone</label>
+<input type="text" id="adminCredential" required />
+</div>
+<div class="form-group">
+<label>Password</label>
+<input type="password" id="adminPassword" required />
+</div>
+<button class="btn" onclick="institutionAdminLogin()">Login</button>
+<button class="btn btn-secondary" onclick="backToWelcome()">← Back to Home</button>
+</div>
+
+<!-- User Profile Dashboard -->
+<div id="profileDashboard" class="dashboard">
+<h1>👤 My Profile</h1>
+<p>
+Welcome, <span id="profileUserName"></span> |
+<button class="btn btn-secondary" onclick="logout()">Logout</button>
+</p>
+<div style="text-align:center; margin-bottom:20px;">
+<img id="profileImagePreview" src="" alt="Profile Image" width="150" height="150" style="border-radius:50%; object-fit:cover;"/>
+<br />
+<input type="file" id="profileImageInput" accept="image/*" />
+<button class="btn" onclick="saveProfileImage()">Save Profile Image</button>
+</div>
+
+<div class="report-section">
+<h3>📋 Your Reports</h3>
+<div id="profileReports" class="reports-list"></div>
+</div>
+
+<hr style="margin:40px 0;" />
+
+<div class="report-form" id="reportFormSection">
+<h3>📣 File a Lost or Found Report</h3>
+<label for="reportType">Report Type</label>
+<select id="reportType">
+<option value="lost">Lost</option>
+<option value="found">Found</option>
+</select>
+
+<label for="categoryInput">Category</label>
+<select id="categoryInput">
+<option value="Electronics">Electronics</option>
+<option value="Stationery">Stationery</option>
+<option value="Clothing">Clothing</option>
+<option value="ID Card">ID Card</option>
+<option value="Jewelry">Jewelry</option>
+<option value="Others">Others</option>
+</select>
+
+<label for="itemNameInput">Item Name</label>
+<input type="text" id="itemNameInput" placeholder="e.g. Wallet, Laptop, Phone" required />
+
+<label for="locationInput">Location</label>
+<input type="text" id="locationInput" placeholder="Where lost/found?" required />
+
+<label for="descriptionInput">Description (optional)</label>
+<textarea id="descriptionInput" rows="3" placeholder="Details about the item..."></textarea>
+
+<button onclick="submitReport()">Submit Report</button>
+</div>
+
+<hr style="margin:40px 0;" />
+
+<div class="contact-form" id="contactAdminSection">
+<h3>📞 Contact Admin</h3>
+<p>You can contact your institution admin via message or phone.</p>
+<p><strong>Admin Phone:</strong> <span id="adminPhoneDisplay"></span></p>
+
+<label for="contactMessage">Message</label>
+<textarea id="contactMessage" rows="3" placeholder="Write your message to Admin..." required></textarea>
+
+<button onclick="sendMessageToAdmin()">Send Message</button>
+</div>
+
+<hr style="margin:40px 0;" />
+
+<div class="contact-form" id="sentMessagesSection">
+<h3>✉️ Sent Messages</h3>
+<div id="sentMessagesList" class="message-list">
+<p>No messages sent yet.</p>
+</div>
+</div>
+</div>
+
+<!-- Operational Team Panel -->
+<div id="operationalPanel" class="admin-panel">
+<div class="container">
+<h1>🔎 Operational Team Panel - <span id="operationalOrgName"></span></h1>
+<p>
+<button class="btn btn-secondary" onclick="operationalLogout()">Logout</button>
+</p>
+
+<div id="operationalNav" class="admin-nav">
+<button class="active" onclick="showOperationalSection('reports', event)">Reports</button>
+<button onclick="showOperationalSection('users', event)">User Management</button>
+<button onclick="showOperationalSection('categoryGraph', event)">Category Report</button>
+<button onclick="showOperationalSection('matchedItems', event)">AI Matches</button>
+<button onclick="showOperationalSection('messages', event)">Messages</button>
+</div>
+
+<div id="operationalContent">
+<div id="operationalReportsSection">
+<h3>All Reports of Students & Employees</h3>
+<div id="operationalReports" class="reports-list"></div>
+</div>
+<div id="operationalUsersSection" style="display:none;">
+<h3>User Management</h3>
+<div id="operationalUsersList"></div>
+</div>
+<div id="operationalCategoryGraphSection" style="display:none;">
+<h3>Reported Items by Category</h3>
+<canvas id="categoryChart" width="400" height="300"></canvas>
+</div>
+<div id="operationalMatchedItemsSection" style="display:none;">
+<h3>AI-based Matched Lost and Found Items</h3>
+<div id="matchedItemsContainer" class="reports-list"></div>
+</div>
+<div id="operationalMessagesSection" style="display:none;">
+<h3>✉️ Messages Sent to Admin</h3>
+<div id="operationalAdminMessages" class="message-list"></div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Institution Admin Panel -->
+<div id="institutionAdminPanel" class="admin-panel">
+<div class="container">
+<h1>🏢 Institution Admin Panel - <span id="institutionAdminOrgName"></span></h1>
+<p>
+<button class="btn btn-secondary" onclick="institutionAdminLogout()">Logout</button>
+</p>
+
+<div class="admin-nav">
+<button class="active" onclick="showInstitutionSection('allReports')">All Reports</button>
+<button onclick="showInstitutionSection('users')">All Users</button>
+<button onclick="showInstitutionSection('messages')">Messages</button>
+</div>
+
+<div id="institutionAdminContent">
+<div id="instAllReportsSection">
+<h3>📋 All Student & Employee Lost & Found Reports</h3>
+<div id="instAdminReports" class="reports-list"></div>
+</div>
+<div id="instUsersSection" style="display:none;">
+<h3>👥 All Registered Students & Employees</h3>
+<div id="instAdminUsers"></div>
+</div>
+<div id="instMessagesSection" style="display:none;">
+<h3>✉️ Messages Sent to Admin</h3>
+<div id="instAdminMessages" class="message-list"></div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Messages -->
+<div id="successMsg" class="success-message"></div>
+<div id="errorMsg" class="error-message"></div>
+
+<footer>© 2024 Aryan Chauhan. All rights reserved.</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+// Clock script to update time
+function showTime() {
+document.getElementById('currentTime').innerHTML = new Date().toUTCString();
+}
+showTime();
+setInterval(() => showTime(), 1000);
+
+// Data Storage
+let currentOrg = '';
+let currentUser = null;
+let currentRole = '';
+let isAdmin = false;
+let isOperational = false;
+let isInstitutionAdmin = false;
+
+const INSTITUTION_CREDS = {
+SRMU: {
+institutionAdmin: {
+'admin@srmu.edu.in': {
+password: 'adminpass',
+name: 'SRMU Admin',
+email: 'admin@srmu.edu.in',
+phone: '+91-1111111111',
+},
+},
+operationalTeam: {
+'operational@srmu.edu.in': {
+password: 'operationalpass',
+name: 'SRMU Operational',
+email: 'operational@srmu.edu.in',
+phone: '+91-2222222222',
+},
+},
+},
+SRMCEM: {
+institutionAdmin: {
+'admin@srmcem.edu.in': {
+password: 'adminpass',
+name: 'SRMCEM Admin',
+email: 'admin@srmcem.edu.in',
+phone: '+91-3333333333',
+},
+},
+operationalTeam: {
+'operational@srmcem.edu.in': {
+password: 'operationalpass',
+name: 'SRMCEM Operational',
+email: 'operational@srmcem.edu.in',
+phone: '+91-4444444444',
+},
+},
+},
+SRMS: {
+institutionAdmin: {
+'admin@srms.edu.in': {
+password: 'adminpass',
+name: 'SRMS Admin',
+email: 'admin@srms.edu.in',
+phone: '+91-5555555555',
+},
+},
+operationalTeam: {
+'operational@srms.edu.in': {
+password: 'operationalpass',
+name: 'SRMS Operational',
+email: 'operational@srms.edu.in',
+phone: '+91-6666666666',
+},
+},
+},
+};
+
+let usersDB = JSON.parse(localStorage.getItem('usersDB')) || {};
+let reportsDB = JSON.parse(localStorage.getItem('reportsDB')) || [];
+let profileImages = JSON.parse(localStorage.getItem('profileImages')) || {};
+let adminMessages = JSON.parse(localStorage.getItem('adminMessages') || '{}') || {};
+let sentMessages = JSON.parse(localStorage.getItem('sentMessages') || '{}') || {};
+
+const orgNames = {
+SRMU: 'Shri Ramswaroop Memorial University',
+SRMCEM: 'Shri Ramswaroop Memorial College of Engineering & Management',
+SRMS: 'Shri Ramswaroop Memorial School',
+};
+
+function showAdminLogin() {
+hideAllSections();
+document.getElementById('adminLogin').classList.add('active');
+document.getElementById('adminLogin').style.display = 'block';
+document.getElementById('welcomePage').style.display = 'none';
+}
+
+function hideAllSections() {
+document.querySelectorAll('.form-container, .dashboard, .admin-panel').forEach((el) => {
+el.classList.remove('active');
+el.style.display = 'none';
+});
+document.getElementById('welcomePage').style.display = 'none';
+}
+
+function selectOrg(org) {
+currentOrg = org;
+currentRole = '';
+hideAllSections();
+document.getElementById('roleSelection').classList.add('active');
+document.getElementById('roleSelection').style.display = 'block';
+document.getElementById('orgName').textContent = orgNames[org];
+resetSignupExtraInputs();
+}
+
+function backToWelcome() {
+clearLoginSignupForms();
+currentUser = null;
+isAdmin = false;
+isInstitutionAdmin = false;
+isOperational = false;
+currentRole = '';
+currentOrg = '';
+hideAllSections();
+document.getElementById('welcomePage').style.display = 'block';
+}
+
+function clearLoginSignupForms() {
+const inputs = [
+'loginCredential','loginPassword','signupName','signupEmail','signupPhone','signupUniId','signupErpId','signupPassword','contactMessage','adminCredential','adminPassword'
+];
+inputs.forEach(id => {
+if(document.getElementById(id)) document.getElementById(id).value = '';
+});
+}
+
+function resetSignupExtraInputs() {
+const uniGroup = document.getElementById('uniIdGroup');
+const erpGroup = document.getElementById('erpIdGroup');
+const role = currentRole.toLowerCase();
+if (role === 'student' || role === 'employee') {
+uniGroup.style.display = 'block';
+erpGroup.style.display = 'block';
+document.getElementById('signupUniId').required = true;
+document.getElementById('signupErpId').required = true;
+} else {
+uniGroup.style.display = 'none';
+erpGroup.style.display = 'none';
+document.getElementById('signupUniId').required = false;
+document.getElementById('signupErpId').required = false;
+}
+}
+
+function showLogin(role) {
+currentRole = role;
+resetSignupExtraInputs();
+hideAllSections();
+document.getElementById('loginForm').classList.add('active');
+document.getElementById('loginForm').style.display = 'block';
+document.getElementById('loginTitle').textContent =
+role.charAt(0).toUpperCase() + role.slice(1) + ' Login';
+document.getElementById('loginOrg').textContent = orgNames[currentOrg];
+clearLoginSignupForms();
+}
+
+function showSignup(role) {
+currentRole = role;
+resetSignupExtraInputs();
+hideAllSections();
+document.getElementById('signupForm').classList.add('active');
+document.getElementById('signupForm').style.display = 'block';
+document.getElementById('signupOrg').textContent = orgNames[currentOrg];
+clearLoginSignupForms();
+}
+
+function backToRole() {
+hideAllSections();
+document.getElementById('roleSelection').classList.add('active');
+document.getElementById('roleSelection').style.display = 'block';
+clearLoginSignupForms();
+}
+
+function loginUser() {
+const credential = document.getElementById('loginCredential').value.trim();
+const password = document.getElementById('loginPassword').value;
+
+if (!credential || !password) {
+showMessage('Please fill all fields!', 'error');
+return;
+}
+let user = null;
+const emailKey = `${currentOrg}_${credential}`;
+if (
+usersDB[emailKey] &&
+usersDB[emailKey].password === password &&
+usersDB[emailKey].role === currentRole
+) {
+user = usersDB[emailKey];
+} else {
+for (const key in usersDB) {
+if (
+key.startsWith(currentOrg + '_') &&
+usersDB[key].phone === credential &&
+usersDB[key].password === password &&
+usersDB[key].role === currentRole
+) {
+user = usersDB[key];
+break;
+}
+}
+}
+
+if (user) {
+currentUser = user;
+currentRole = user.role;
+currentOrg = user.org;
+isAdmin = false;
+isInstitutionAdmin = false;
+isOperational = false;
+clearForms();
+showProfileDashboard();
+} else {
+showMessage('Invalid credentials or role!', 'error');
+}
+}
+
+function signupUser() {
+const name = document.getElementById('signupName').value.trim();
+const email = document.getElementById('signupEmail').value.trim();
+const phone = document.getElementById('signupPhone').value.trim();
+const password = document.getElementById('signupPassword').value;
+const role = document.getElementById('signupRole').value;
+const uniId = document.getElementById('signupUniId').value.trim();
+const erpId = document.getElementById('signupErpId').value.trim();
+
+if (!name || !email || !phone || !password) {
+showMessage('Please fill all mandatory fields!', 'error');
+return;
+}
+
+if ((role === 'student' || role === 'employee') && (!uniId || !erpId)) {
+showMessage(
+'University/College/School ID and ERP ID are mandatory for students and employees.',
+'error'
+);
+return;
+}
+
+const emailKey = `${currentOrg}_${email}`;
+const phoneKey = `${currentOrg}_${phone}`;
+
+if (usersDB[emailKey] || usersDB[phoneKey]) {
+showMessage('User with this email or phone already exists! Please login.', 'error');
+return;
+}
+
+const userObj = {
+name,
+email,
+phone,
+password,
+role,
+org: currentOrg,
+joined: new Date().toISOString(),
+universityId: uniId || '',
+erpId: erpId || '',
+status: 'pending',
+};
+
+usersDB[emailKey] = userObj;
+usersDB[phoneKey] = userObj;
+
+localStorage.setItem('usersDB', JSON.stringify(usersDB));
+showMessage('Registration successful! Redirecting to profile...', 'success');
+setTimeout(() => {
+currentUser = userObj;
+currentRole = userObj.role;
+isAdmin = false;
+isInstitutionAdmin = false;
+isOperational = false;
+clearForms();
+showProfileDashboard();
+}, 2000);
+}
+
+function institutionAdminLogin() {
+const org = document.getElementById('adminOrgSelect').value;
+const role = document.getElementById('adminRoleSelect').value;
+const credential = document.getElementById('adminCredential').value.trim();
+const password = document.getElementById('adminPassword').value;
+
+if (!credential || !password) {
+showMessage('Please fill all fields!', 'error');
+return;
+}
+
+if (
+INSTITUTION_CREDS[org] &&
+INSTITUTION_CREDS[org][role] &&
+INSTITUTION_CREDS[org][role][credential]
+) {
+const credObj = INSTITUTION_CREDS[org][role][credential];
+if (credObj.password === password) {
+currentUser = {
+name: credObj.name,
+email: credObj.email,
+phone: credObj.phone,
+org: org,
+role: role,
+};
+currentOrg = org;
+isAdmin = false;
+isInstitutionAdmin = false;
+isOperational = false;
+if (role === 'institutionAdmin') {
+isInstitutionAdmin = true;
+clearForms();
+showInstitutionAdminPanel();
+} else if (role === 'operationalTeam') {
+isOperational = true;
+clearForms();
+showOperationalPanel();
+}
+return;
+}
+}
+showMessage('Invalid admin/operational credentials!', 'error');
+}
+
+function logout() {
+currentUser = null;
+currentRole = '';
+currentOrg = '';
+isAdmin = false;
+isOperational = false;
+isInstitutionAdmin = false;
+clearForms();
+hideAllSections();
+document.getElementById('welcomePage').style.display = 'block';
+}
+
+function operationalLogout() {
+logout();
+}
+
+function institutionAdminLogout() {
+logout();
+}
+
+function showProfileDashboard() {
+hideAllSections();
+const profile = document.getElementById('profileDashboard');
+profile.classList.add('active');
+profile.style.display = 'block';
+document.getElementById('profileUserName').textContent = currentUser.name;
+loadProfileImage();
+loadUserReportsForProfile();
+loadAdminPhone();
+showSentMessages();
+}
+
+function loadProfileImage() {
+const userKey = `${currentUser.org}_${currentUser.email}`;
+const imgsrc = profileImages[userKey];
+const imgPreview = document.getElementById('profileImagePreview');
+if (imgsrc && imgsrc.length > 0) {
+imgPreview.src = imgsrc;
+} else {
+imgPreview.src = 'https://via.placeholder.com/150?text=No+Image';
+}
+}
+
+function saveProfileImage() {
+const fileInput = document.getElementById('profileImageInput');
+if (fileInput.files.length === 0) {
+showMessage('Please select an image to upload.', 'error');
+return;
+}
+const file = fileInput.files[0];
+const reader = new FileReader();
+reader.onload = function (e) {
+const base64 = e.target.result;
+const userKey = `${currentUser.org}_${currentUser.email}`;
+profileImages[userKey] = base64;
+localStorage.setItem('profileImages', JSON.stringify(profileImages));
+loadProfileImage();
+showMessage('Profile image saved successfully.', 'success');
+fileInput.value = '';
+};
+reader.readAsDataURL(file);
+}
+
+function loadUserReportsForProfile() {
+const userReports = reportsDB.filter((r) => r.userEmail === currentUser.email);
+const container = document.getElementById('profileReports');
+
+container.innerHTML =
+userReports
+.map(
+(report) => `
+<div class="report-card">
+<h4>${report.type === 'lost' ? '🚨 LOST' : '✅ FOUND'}: ${report.itemName} <small>(${report.category})</small></h4>
+<p><strong>Location:</strong> ${report.location}</p>
+${report.description ? `<p><strong>Description:</strong> ${report.description}</p>` : ''}
+<p><strong>Date:</strong> ${report.date}</p>
+<p><strong>Status:</strong> ${
+report.status === 'approved' ? '🟢 Approved' : report.status === 'rejected' ? '🔴 Rejected' : '🟠 Pending'
+}</p>
+</div>`
+)
+.join('') || '<p>No reports yet.</p>';
+}
+
+function submitReport() {
+const type = document.getElementById('reportType').value;
+const category = document.getElementById('categoryInput').value;
+const itemName = document.getElementById('itemNameInput').value.trim();
+const location = document.getElementById('locationInput').value.trim();
+const description = document.getElementById('descriptionInput').value.trim();
+
+if (!itemName || !location) {
+showMessage('Please fill item name and location', 'error');
+return;
+}
+
+const newId = reportsDB.length > 0 ? reportsDB[reportsDB.length - 1].id + 1 : 1;
+
+const reportObj = {
+id: newId,
+type,
+category,
+itemName,
+location,
+description,
+user: currentUser.name,
+userEmail: currentUser.email,
+role: currentUser.role,
+phone: currentUser.phone,
+org: currentUser.org,
+date: new Date().toLocaleDateString(),
+status: 'pending',
+hasImage: false,
+};
+
+reportsDB.push(reportObj);
+localStorage.setItem('reportsDB', JSON.stringify(reportsDB));
+showMessage('Report submitted successfully and awaiting approval.', 'success');
+
+document.getElementById('itemNameInput').value = '';
+document.getElementById('locationInput').value = '';
+document.getElementById('descriptionInput').value = '';
+
+loadUserReportsForProfile();
+}
+
+function loadAdminPhone() {
+if (!currentOrg) {
+document.getElementById('adminPhoneDisplay').textContent = 'N/A';
+return;
+}
+let adminPhone = 'N/A';
+const instAdmin = INSTITUTION_CREDS[currentOrg]?.institutionAdmin;
+if (instAdmin) {
+const firstKey = Object.keys(instAdmin)[0];
+if (firstKey) adminPhone = instAdmin[firstKey].phone || 'N/A';
+}
+document.getElementById('adminPhoneDisplay').textContent = adminPhone;
+}
+
+function sendMessageToAdmin() {
+const msgText = document.getElementById('contactMessage').value.trim();
+if (!msgText) {
+showMessage('Please enter a message to send.', 'error');
+return;
+}
+const adminPhone = document.getElementById('adminPhoneDisplay').textContent || 'N/A';
+if (adminPhone === 'N/A') {
+showMessage('No admin phone available. Cannot send message.', 'error');
+return;
+}
+
+adminMessages = JSON.parse(localStorage.getItem('adminMessages') || '{}');
+sentMessages = JSON.parse(localStorage.getItem('sentMessages') || '{}');
+
+if (!adminMessages[adminPhone]) adminMessages[adminPhone] = [];
+adminMessages[adminPhone].push({
+from: currentUser.email,
+name: currentUser.name,
+role: currentUser.role,
+message: msgText,
+date: new Date().toLocaleString(),
+});
+localStorage.setItem('adminMessages', JSON.stringify(adminMessages));
+
+if (!sentMessages[currentUser.email]) sentMessages[currentUser.email] = [];
+sentMessages[currentUser.email].push({
+to: adminPhone,
+message: msgText,
+date: new Date().toLocaleString(),
+});
+localStorage.setItem('sentMessages', JSON.stringify(sentMessages));
+
+showMessage('Message sent to admin successfully.', 'success');
+document.getElementById('contactMessage').value = '';
+
+showSentMessages();
+}
+
+function showSentMessages() {
+const container = document.getElementById('sentMessagesList');
+container.innerHTML = '';
+const messages = sentMessages[currentUser.email] || [];
+if (messages.length === 0) {
+container.innerHTML = '<p>No messages sent yet.</p>';
+return;
+}
+let html = '';
+messages.forEach((msg) => {
+html += `<div class="message-item">
+<div class="message-header">To Admin Phone: ${msg.to}</div>
+<div class="message-date">${msg.date}</div>
+<div class="message-content">${msg.message}</div>
+</div>`;
+});
+container.innerHTML = html;
+}
+
+function showOperationalPanel() {
+hideAllSections();
+document.getElementById('operationalPanel').classList.add('active');
+document.getElementById('operationalPanel').style.display = 'block';
+document.getElementById('operationalOrgName').textContent = orgNames[currentOrg];
+showOperationalSection('reports');
+}
+
+function showOperationalSection(section, evt) {
+const btns = document.querySelectorAll('#operationalNav button');
+btns.forEach((btn) => {
+if (btn.textContent.toLowerCase().includes(section.toLowerCase())) btn.classList.add('active');
+else btn.classList.remove('active');
+});
+
+['operationalReportsSection','operationalUsersSection','operationalCategoryGraphSection','operationalMatchedItemsSection','operationalMessagesSection'].forEach(id=>{
+document.getElementById(id).style.display = 'none';
+});
+
+switch (section) {
+case 'reports':
+document.getElementById('operationalReportsSection').style.display = 'block';
+renderOperationalReports();
+break;
+case 'users':
+document.getElementById('operationalUsersSection').style.display = 'block';
+renderOperationalUsers();
+break;
+case 'categoryGraph':
+document.getElementById('operationalCategoryGraphSection').style.display = 'block';
+drawCategoryChart();
+break;
+case 'matchedItems':
+document.getElementById('operationalMatchedItemsSection').style.display = 'block';
+renderMatchedItems();
+break;
+case 'messages':
+document.getElementById('operationalMessagesSection').style.display = 'block';
+renderOperationalAdminMessages();
+break;
+}
+}
+
+function showInstitutionAdminPanel() {
+hideAllSections();
+document.getElementById('institutionAdminPanel').classList.add('active');
+document.getElementById('institutionAdminPanel').style.display = 'block';
+document.getElementById('institutionAdminOrgName').textContent = orgNames[currentOrg];
+showInstitutionSection('allReports');
+}
+
+function showInstitutionSection(section) {
+const btns = document.querySelectorAll('#institutionAdminPanel .admin-nav button');
+btns.forEach((btn) => {
+if (btn.textContent.toLowerCase().includes(section.toLowerCase())) btn.classList.add('active');
+else btn.classList.remove('active');
+});
+
+['instAllReportsSection','instUsersSection','instMessagesSection'].forEach(id=>{
+document.getElementById(id).style.display = 'none';
+});
+
+switch(section) {
+case 'allReports':
+document.getElementById('instAllReportsSection').style.display = 'block';
+renderInstitutionReports();
+break;
+case 'users':
+document.getElementById('instUsersSection').style.display = 'block';
+renderInstitutionUsers();
+break;
+case 'messages':
+document.getElementById('instMessagesSection').style.display = 'block';
+renderInstitutionMessages();
+break;
+}
+}
+
+function renderOperationalReports() {
+const container = document.getElementById('operationalReports');
+const filtered = reportsDB.filter(r => r.org === currentOrg);
+if(filtered.length === 0){
+container.innerHTML = '<p>No reports found.</p>';
+return;
+}
+container.innerHTML = filtered.map(r => `
+<div class="report-card">
+<h4>${r.type === 'lost' ? '🚨 LOST':'✅ FOUND'}: ${r.itemName} (${r.category})</h4>
+<p><strong>User:</strong> ${r.user} (${r.role})</p>
+<p><strong>Location:</strong> ${r.location}</p>
+${r.description ? `<p><strong>Description:</strong> ${r.description}</p>` : ''}
+<p><strong>Date:</strong> ${r.date}</p>
+<p><strong>Status:</strong> ${r.status}</p>
+<button class="verify-btn" onclick="verifyReport(${r.id},'approved')">Approve</button>
+<button class="verify-btn" style="background:#dc3545;" onclick="verifyReport(${r.id},'rejected')">Reject</button>
+</div>`).join('');
+}
+
+function renderOperationalUsers() {
+const container = document.getElementById('operationalUsersList');
+let userEmails = new Set();
+let users = [];
+for(const key in usersDB) {
+if(key.startsWith(currentOrg + '_') && !userEmails.has(usersDB[key].email)) {
+userEmails.add(usersDB[key].email);
+users.push(usersDB[key]);
+}
+}
+if(users.length === 0){
+container.innerHTML = '<p>No registered users found.</p>';
+return;
+}
+container.innerHTML = users.map(u=>`
+<div class="report-card">
+<h4>${u.name} (${u.role})</h4>
+<p><strong>Email:</strong> ${u.email}</p>
+<p><strong>Phone:</strong> ${u.phone}</p>
+<p><strong>Status:</strong> ${u.status}</p>
+</div>`).join('');
+}
+
+function renderInstitutionReports() {
+const container = document.getElementById('instAdminReports');
+const filtered = reportsDB.filter(r => r.org === currentOrg);
+if(filtered.length === 0){
+container.innerHTML = '<p>No reports found.</p>';
+return;
+}
+container.innerHTML = filtered.map(r => `
+<div class="report-card">
+<h4>${r.type === 'lost'?'🚨 LOST':'✅ FOUND'}: ${r.itemName} (${r.category})</h4>
+<p><strong>User:</strong> ${r.user} (${r.role})</p>
+<p><strong>Location:</strong> ${r.location}</p>
+${r.description? `<p><strong>Description:</strong> ${r.description}</p>` : ''}
+<p><strong>Date:</strong> ${r.date}</p>
+<p><strong>Status:</strong> ${r.status}</p>
+</div>`).join('');
+}
+
+function renderInstitutionUsers() {
+const container = document.getElementById('instAdminUsers');
+let userEmails = new Set();
+let users = [];
+for(const key in usersDB) {
+if(key.startsWith(currentOrg + '_') && !userEmails.has(usersDB[key].email)) {
+userEmails.add(usersDB[key].email);
+users.push(usersDB[key]);
+}
+}
+if(users.length === 0){
+container.innerHTML = '<p>No registered users found.</p>';
+return;
+}
+container.innerHTML = users.map(u => `
+<div class="report-card">
+<h4>${u.name} (${u.role})</h4>
+<p><strong>Email:</strong> ${u.email}</p>
+<p><strong>Phone:</strong> ${u.phone}</p>
+<p><strong>Status:</strong> ${u.status}</p>
+</div>`).join('');
+}
+
+function renderInstitutionMessages() {
+const container = document.getElementById('instAdminMessages');
+const adminPhone = document.getElementById('adminPhoneDisplay').textContent;
+const messages = adminMessages[adminPhone] || [];
+if(messages.length === 0) {
+container.innerHTML = '<p>No messages received.</p>';
+return;
+}
+container.innerHTML = messages.map(m => `
+<div class="message-item">
+<div class="message-header">${m.name} (${m.role}, ${m.from})</div>
+<div class="message-date">${m.date}</div>
+<div class="message-content">${m.message}</div>
+</div>`).join('');
+}
+
+function renderOperationalAdminMessages() {
+const container = document.getElementById('operationalAdminMessages');
+const adminPhone = document.getElementById('adminPhoneDisplay').textContent;
+const messages = adminMessages[adminPhone] || [];
+if(messages.length === 0) {
+container.innerHTML = '<p>No messages received.</p>';
+return;
+}
+container.innerHTML = messages.map(m => `
+<div class="message-item">
+<div class="message-header">${m.name} (${m.role}, ${m.from})</div>
+<div class="message-date">${m.date}</div>
+<div class="message-content">${m.message}</div>
+</div>`).join('');
+}
+
+
+function drawCategoryChart() {
+const ctx = document.getElementById('categoryChart').getContext('2d');
+
+let counts = {};
+reportsDB.filter(r => r.org === currentOrg).forEach(r => {
+counts[r.category] = (counts[r.category] || 0) + 1;
+});
+
+const categories = Object.keys(counts);
+const data = categories.map(cat => counts[cat]);
+
+if(window.categoryChartInstance) window.categoryChartInstance.destroy();
+
+window.categoryChartInstance = new Chart(ctx, {
+type: 'bar',
+data: {
+labels: categories,
+datasets: [{
+label: 'Number of Reports',
+data: data,
+backgroundColor: 'rgba(72, 85, 224, 0.6)',
+borderColor: 'rgba(72, 85, 224, 1)',
+borderWidth: 1
+}]
+},
+options: {
+scales: {
+y: { beginAtZero:true, precision:0 }
+}
+}
+});
+}
+
+function renderMatchedItems() {
+const container = document.getElementById('matchedItemsContainer');
+container.innerHTML = '<p>AI matching feature not implemented in this demo.</p>';
+}
+
+function verifyReport(id, status) {
+const index = reportsDB.findIndex(r => r.id === id);
+if(index === -1) {
+showMessage('Report not found.', 'error');
+return;
+}
+reportsDB[index].status = status;
+localStorage.setItem('reportsDB', JSON.stringify(reportsDB));
+showMessage(`Report ${status}.`, 'success');
+renderOperationalReports();
+}
+
+function clearForms() {
+document.querySelectorAll('input, textarea, select').forEach((input) => {
+input.value = '';
+});
+}
+
+function showMessage(msg, type) {
+const successDiv = document.getElementById('successMsg');
+const errorDiv = document.getElementById('errorMsg');
+
+if (type === 'success') {
+errorDiv.style.display = 'none';
+successDiv.textContent = msg;
+successDiv.style.display = 'block';
+setTimeout(() => {
+successDiv.style.display = 'none';
+}, 4000);
+} else if (type === 'error') {
+successDiv.style.display = 'none';
+errorDiv.textContent = msg;
+errorDiv.style.display = 'block';
+setTimeout(() => {
+errorDiv.style.display = 'none';
+}, 4000);
+}
+}
+
+document.getElementById('signupRole').addEventListener('change', function () {
+currentRole = this.value;
+resetSignupExtraInputs();
+});
+</script>
+</body>
+</html>
